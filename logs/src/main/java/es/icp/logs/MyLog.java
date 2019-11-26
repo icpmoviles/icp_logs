@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class MyLog {
 
-    private static Boolean DEBUG = true;
+    private static Boolean DEBUG = BuildConfig.DEBUG;
 
     /**
      * Etiqueta a mostrar en el log
@@ -240,6 +240,32 @@ public class MyLog {
             Log.d(TAG, construirTexto("╚" + repeat("═", texto.length() + (longitud * 2)) + "╝", trace));
 
     }
+
+
+    /**
+     * Dibuja un cuadro de texto de una sola linea
+     * ╔═══════════════════════════╗
+     * ║     Lorem Dolor Ipsum     ║
+     * ╚═══════════════════════════╝
+     *
+     * @param texto Texto a mostrar
+     */
+    public static void ce (String texto){
+
+        int longitud = 5;
+
+        int trace = 6;
+
+        if (DEBUG)
+            Log.e(TAG, construirTexto("╔" + repeat("═", texto.length() + (longitud * 2)) + "╗", trace));
+        if (DEBUG)
+            Log.e(TAG, construirTexto("║" + repeat(" ", 5) + texto + repeat(" ", 5) + "║", trace));
+        if (DEBUG)
+            Log.e(TAG, construirTexto("╚" + repeat("═", texto.length() + (longitud * 2)) + "╝", trace));
+
+    }
+
+
 
     /**
      * Dibuja una linea de separacion de log

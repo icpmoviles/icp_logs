@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "es.icp.libraries"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -25,5 +25,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    compile project(path: ':logs')
+
+
+    implementation 'com.github.icpmoviles:icp_logs:1.0.0.1'
+
+
+
 }
