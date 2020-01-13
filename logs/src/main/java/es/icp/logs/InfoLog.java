@@ -57,6 +57,7 @@ public class InfoLog {
 
             case PULSACION:
                 return tiempo + " => " +
+                        "TOC/ {"+ nombre +"}"+
                         " activity='" + activity + '\'' +
                         ", nombre='" + nombre + '\'' +
                         ", clase='" + clase + '\'' +

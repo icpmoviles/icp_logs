@@ -201,7 +201,7 @@ public class MyLog {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String tiempo = sdf.format(new Date(yourmilliseconds));
 
-            texto = tipo + " " + texto;
+            texto = tipo.toString().substring(0,3) + "/ " + texto;
             fw(context, new InfoLog(texto));
         }
     }
