@@ -23,6 +23,7 @@ public class LogTouch {
     public static void init(final Context context, View v) {
         nombreActivity = ((Activity) context).getLocalClassName();
         final ViewGroup viewgroup = (ViewGroup) v;
+        MyLog.d("Hijos encontrados: " + viewgroup.getChildCount());
         for (int i = 0; i < viewgroup.getChildCount(); i++) {
             View v1 = viewgroup.getChildAt(i);
             if (v1 instanceof ViewGroup) init(context, v1);
