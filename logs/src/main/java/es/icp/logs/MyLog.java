@@ -19,7 +19,7 @@ public class MyLog {
     enum TIPO {DEBUG, ERROR, WARNING, INFORMATION, VERBOSE, INFO}
 
    private static Boolean DEBUG = BuildConfig.DEBUG;
-
+    private static Boolean SAVE_FILE = true;
     /**
      * Etiqueta a mostrar en el log
      */
@@ -32,8 +32,7 @@ public class MyLog {
     private static Boolean mostrarMetodo = true;
     private static Boolean mostrarLineas = true;
 
-    private static Boolean SAVE_FILE = true;
-    private static String CARPETA_LOG = "LOGS";
+
     private static Context context;
     private static StackTraceElement traceElement; //vb para almacenar la traza cuando la mostamos en el log, para poder guardarla en el ficheo si queremos.
 
@@ -163,7 +162,7 @@ public class MyLog {
         try {
             l();
             String cadena = dameInfoTrace(4) + jsonObject.toString(TABULACION_JSON);
-            fw(context, new InfoLog(cadena));
+            FileLog.fw(context, new InfoLog(cadena));
             Log.d(TAG, cadena);
 
             l();
@@ -202,7 +201,7 @@ public class MyLog {
             String tiempo = sdf.format(new Date(yourmilliseconds));
 
             texto = tipo.toString().substring(0,3) + "/ " + texto;
-            fw(context, new InfoLog(texto));
+            FileLog.fw(context, new InfoLog(texto));
         }
     }
 
@@ -381,36 +380,6 @@ public class MyLog {
      */
     public static void l() {
         i(repeat("-", 100));
-    }
-
-
-    /**
-     * Escribe el log en un fichero de texto
-     *
-     * @param context
-     * @param info
-     */
-    private static void fw(Context context, InfoLog info) {
-
-        if (!SAVE_FILE) return; //si no esta habilitado el escribir en el fichero salimos del metodo
-
-        try {
-            String carpetaAlmacenamiento = context.getExternalFilesDir(CARPETA_LOG).getPath();
-
-            //comprobamos si existe el directorio donde se almacenara el log, si no es asi lo creamos.
-            File f = new File(carpetaAlmacenamiento);
-            if (!f.isDirectory()) {
-                f.mkdirs();
-            }
-
-            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log.txt", true);
-            //FileOutputStream fos = context.openFileOutput(carpetaAlmacenamiento +"/log.txt", Context.MODE_APPEND);
-            OutputStreamWriter fout = new OutputStreamWriter(fos);
-            fout.write(info.toLog() + "\n");
-            fout.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
 

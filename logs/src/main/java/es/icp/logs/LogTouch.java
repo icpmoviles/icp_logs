@@ -51,14 +51,14 @@ public class LogTouch {
                             @Override
                             public void afterTextChanged(Editable s) {
                                 //MyLog.i(" => " + nombre + ", Valor:" + s.toString());
-                                MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + superClase+ " Texto: " + s.toString());
+                                //MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + superClase+ " Texto: " + s.toString());
 
                                 long yourmilliseconds = System.currentTimeMillis();
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mmss");
                                 String tiempo = sdf.format(new Date(yourmilliseconds));
 
 
-                                fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()));
+                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()));
 
                             }
                         });
@@ -76,8 +76,8 @@ public class LogTouch {
 
                                 SimpleDateFormat mls = new SimpleDateFormat("ss.SSS");
                                 String tiempoTranscurrido = mls.format(new Date(event.getEventTime() - event.getDownTime()));
-                                fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""));
-                                MyLog.d("Tocado " + nombre);
+                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""));
+                                //MyLog.d("Tocado " + nombre);
                             }
                             return false;
                         }
@@ -87,29 +87,4 @@ public class LogTouch {
             }
         }
     }
-
-
-    private static void fw(Context context, InfoLog info) {
-        try {
-            String carpetaAlmacenamiento = context.getExternalFilesDir("LOGS").getPath();
-            //comprobamos si existe el directorio donde se almacenara el log, si no es asi lo creamos.
-            File f = new File(carpetaAlmacenamiento);
-            if (!f.isDirectory()) {
-                f.mkdirs();
-            }
-
-            long yourmilliseconds = System.currentTimeMillis();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            String tiempo = sdf.format(new Date(yourmilliseconds));
-
-            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log_"+tiempo+".txt", true);
-            //FileOutputStream fos = context.openFileOutput(carpetaAlmacenamiento +"/log.txt", Context.MODE_APPEND);
-            OutputStreamWriter fout = new OutputStreamWriter(fos);
-            fout.write(info.toLog() + "\n");
-            fout.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
 }
