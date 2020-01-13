@@ -28,6 +28,7 @@ public class LogTouch {
             View v1 = viewgroup.getChildAt(i);
             if (v1 instanceof ViewGroup) init(context, v1);
             String partes[] = v1.getClass().getGenericSuperclass().toString().split("\\.");
+            final String superClase = v1.getClass().getGenericSuperclass().toString();
             if (partes.length > 0) {
                 final String tipo = partes[partes.length - 1];
                 final View vista = ((Activity) context).findViewById(v1.getId());
@@ -50,7 +51,7 @@ public class LogTouch {
                             @Override
                             public void afterTextChanged(Editable s) {
                                 //MyLog.i(" => " + nombre + ", Valor:" + s.toString());
-                                MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + vista.getClass().getGenericSuperclass() + " Texto: " + s.toString());
+                                MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + superClase+ " Texto: " + s.toString());
 
                                 long yourmilliseconds = System.currentTimeMillis();
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mmss");
@@ -96,8 +97,12 @@ public class LogTouch {
             if (!f.isDirectory()) {
                 f.mkdirs();
             }
-//            MyLog.d("--->" + f.getPath().toString());
-            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log.txt", true);
+
+            long yourmilliseconds = System.currentTimeMillis();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            String tiempo = sdf.format(new Date(yourmilliseconds));
+
+            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log_"+tiempo+".txt", true);
             //FileOutputStream fos = context.openFileOutput(carpetaAlmacenamiento +"/log.txt", Context.MODE_APPEND);
             OutputStreamWriter fout = new OutputStreamWriter(fos);
             fout.write(info.toLog() + "\n");
