@@ -5,6 +5,8 @@ import android.content.Context;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FileLog {
 
@@ -22,8 +24,6 @@ public class FileLog {
      */
     public  static void fw(Context context, InfoLog info) {
 
-
-
         try {
             String carpetaAlmacenamiento = context.getExternalFilesDir(CARPETA_LOG).getPath();
 
@@ -33,7 +33,12 @@ public class FileLog {
                 f.mkdirs();
             }
 
-            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log.txt", true);
+            long yourmilliseconds = System.currentTimeMillis();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            String tiempo = sdf.format(new Date(yourmilliseconds));
+
+
+            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log_"+tiempo+".txt", true);
             //FileOutputStream fos = context.openFileOutput(carpetaAlmacenamiento +"/log.txt", Context.MODE_APPEND);
             OutputStreamWriter fout = new OutputStreamWriter(fos);
             fout.write(info.toLog() + "\n");
@@ -41,5 +46,7 @@ public class FileLog {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+
     }
 }
