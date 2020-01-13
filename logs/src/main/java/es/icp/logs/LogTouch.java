@@ -76,7 +76,7 @@ public class LogTouch {
                                 SimpleDateFormat mls = new SimpleDateFormat("ss.SSS");
                                 String tiempoTranscurrido = mls.format(new Date(event.getEventTime() - event.getDownTime()));
                                 fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""));
-
+                                MyLog.d("Tocado " + nombre);
                             }
                             return false;
                         }
