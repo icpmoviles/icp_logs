@@ -1,4 +1,4 @@
-package es.icp.logs;
+package es.icp.logs.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,6 +8,8 @@ import com.jaredrummler.android.device.DeviceName;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import es.icp.logs.core.MyException;
 
 public class Helper {
 

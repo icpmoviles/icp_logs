@@ -1,10 +1,12 @@
-package es.icp.logs;
+package es.icp.logs.core;
 
 import android.os.Build;
 
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+
+import es.icp.logs.BuildConfig;
 
 public class MyException {
 

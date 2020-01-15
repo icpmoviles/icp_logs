@@ -1,13 +1,10 @@
-package es.icp.logs;
+package es.icp.logs.core;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class FileLog {
 

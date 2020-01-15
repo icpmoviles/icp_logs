@@ -1,4 +1,4 @@
-package es.icp.logs;
+package es.icp.logs.core;
 
 import java.io.BufferedReader;
 import java.text.SimpleDateFormat;

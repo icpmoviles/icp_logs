@@ -1,19 +1,15 @@
-package es.icp.logs;
+package es.icp.logs.core;
 
 
 import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import es.icp.logs.BuildConfig;
+import es.icp.logs.utils.LogDetalle;
+import es.icp.logs.utils.Helper;
 
 
 public class MyLog {
@@ -25,7 +21,7 @@ public class MyLog {
     //2: + WARNING
     //3: + INFORMATION + DEBUG
     //4: + VERBOSE
-    public static int nivelDetalleFichero = Constantes.FICHERO_DETALLE_ERROR_WS;
+    public static int nivelDetalleFichero = LogDetalle.ERROR_WS;
     public  static String nombreFicheroLog = "log_"+ Helper.dameMarcaTiempo("YYYYmmdd")+".log";
 
     private static Boolean DEBUG = BuildConfig.DEBUG;
@@ -105,15 +101,17 @@ public class MyLog {
 
     public static void init(Context ctx, Integer nivelDetalle) {
         context = ctx;
-        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : Constantes.FICHERO_DETALLE_ERROR_WS;
+        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : LogDetalle.ERROR_WS;
     }
 
     public static void init(Context ctx, Integer nivelDetalle, String nombreFichero) {
         context = ctx;
 
-        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : Constantes.FICHERO_DETALLE_ERROR_WS;
+        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : LogDetalle.ERROR_WS;
         nombreFicheroLog = nombreFichero;
     }
+
+
 
 
 
@@ -125,7 +123,7 @@ public class MyLog {
     public static void d(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.d(TAG, cadena);
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG)
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.INFORMACION_DEBUG)
             saveFichero(TIPO.DEBUG, cadena);
     }
 
@@ -137,7 +135,7 @@ public class MyLog {
     public static void e(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.e(TAG, cadena);
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_ERROR_WS)
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.ERROR_WS)
             saveFichero(TIPO.ERROR, cadena);
     }
 
@@ -149,7 +147,7 @@ public class MyLog {
     public static void w(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.w(TAG, cadena);
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_WARNING)
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.WARNING)
             saveFichero(TIPO.WARNING, cadena);
     }
 
@@ -161,7 +159,7 @@ public class MyLog {
     public static void i(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.i(TAG, cadena);
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG)
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.INFORMACION_DEBUG)
             saveFichero(TIPO.INFORMATION, cadena);
     }
 
@@ -173,7 +171,7 @@ public class MyLog {
     public static void v(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.v(TAG, cadena);
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_VERBOSE)
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.VERBOSE)
             saveFichero(TIPO.VERBOSE, cadena);
     }
 
@@ -324,7 +322,7 @@ public class MyLog {
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.INFORMACION_DEBUG) {
             saveFichero(TIPO.VERBOSE, linea1);
             saveFichero(TIPO.VERBOSE, linea2);
             saveFichero(TIPO.VERBOSE, linea3);
@@ -355,7 +353,7 @@ public class MyLog {
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.INFORMACION_DEBUG) {
             saveFichero(TIPO.VERBOSE, linea1);
             saveFichero(TIPO.VERBOSE, linea2);
             saveFichero(TIPO.VERBOSE, linea3);
@@ -388,7 +386,7 @@ public class MyLog {
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
+        if (SAVE_FILE && nivelDetalleFichero >= LogDetalle.INFORMACION_DEBUG) {
             saveFichero(TIPO.ERROR, linea1);
             saveFichero(TIPO.ERROR, linea2);
             saveFichero(TIPO.ERROR, linea3);

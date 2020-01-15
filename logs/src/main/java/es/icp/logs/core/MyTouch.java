@@ -1,4 +1,4 @@
-package es.icp.logs;
+package es.icp.logs.core;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LogTouch {
+import es.icp.logs.utils.Helper;
+
+public class MyTouch {
 
     private static String nombreActivity;
 
@@ -36,39 +35,6 @@ public class LogTouch {
                 if (vista != null) {
                     final String nombre = context.getResources().getResourceEntryName(vista.getId());
 
-                    if (tipo.equals("EditText")) {
-
-
-                        ((EditText) vista).addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                //MyLog.i(" => " + nombre + ", Valor:" + s.toString());
-                                //MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + superClase+ " Texto: " + s.toString());
-/*
-                                long yourmilliseconds = System.currentTimeMillis();
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mmss");
-                                String tiempo = sdf.format(new Date(yourmilliseconds));*/
-
-
-                                String tiempo = Helper.dameMarcaTiempo("yyyy-MM-dd hh:mmss");
-
-
-
-                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()), MyLog.nombreFicheroLog);
-
-                            }
-                        });
-
-
-                    }
 
                     vista.setOnTouchListener(new View.OnTouchListener() {
                         @Override
@@ -81,14 +47,35 @@ public class LogTouch {
                                 SimpleDateFormat mls = new SimpleDateFormat("ss.SSS");
                                 String tiempoTranscurrido = mls.format(new Date(event.getEventTime() - event.getDownTime()));
                                 FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""), MyLog.nombreFicheroLog);
-                                //MyLog.d("Tocado " + nombre);
                             }
                             return false;
                         }
                     });
 
+                    if (tipo.equals("EditText")) {
+                        ((EditText) vista).addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                String tiempo = Helper.dameMarcaTiempo("yyyy-MM-dd hh:mmss");
+                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()), MyLog.nombreFicheroLog);
+                            }
+                        });
+                    }
+
+
                 }
             }
         }
     }
+
+
+
 }

@@ -1,4 +1,4 @@
-package es.icp.logs.Firebase;
+package es.icp.logs.firebase;
 
 
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileInputStream;
 
-import es.icp.logs.MyLog;
+import es.icp.logs.core.MyLog;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -34,16 +34,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        //super.onMessageReceived(remoteMessage);
-Log.d("AAAAAAAAAAAAAAAA", "inicio...................");
 
         String titulo = remoteMessage.getNotification().getTitle();
         String mensajeRecibido = remoteMessage.getNotification().getBody();
 
-        MyLog.c("Titulo:" + titulo);
-        MyLog.c("Mensaje recibido:" + mensajeRecibido);
+        MyLog.d("Titulo:" + titulo);
+        MyLog.d("Mensaje recibido:" + mensajeRecibido);
+        MyLog.d("Fichero:" + MyLog.nombreFicheroLog);
 
-        MyLog.c("Fichero:" + MyLog.nombreFicheroLog);
         switch (remoteMessage.getNotification().getTitle().toString().trim()) {
 
             case "GET_LOG":
@@ -63,7 +61,7 @@ Log.d("AAAAAAAAAAAAAAAA", "inicio...................");
 
 
     private void uploadFile(Context context, String fichero) {
-        MyLog.ce(fichero);
+        MyLog.d("Subiendo fichero..." + fichero);
         if (auth == null) auth = FirebaseAuth.getInstance();
         if (storage == null) storage = FirebaseStorage.getInstance();
         File file = new File(fichero);
