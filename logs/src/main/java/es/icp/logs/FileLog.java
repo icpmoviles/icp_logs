@@ -1,6 +1,7 @@
 package es.icp.logs;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,10 +23,12 @@ public class FileLog {
      * @param context
      * @param info
      */
-    public  static void fw(Context context, InfoLog info) {
+    public  static void fw(Context context, InfoLog info, String nombreFichero) {
 
         try {
-            String carpetaAlmacenamiento = context.getExternalFilesDir(CARPETA_LOG).getPath();
+            //String carpetaAlmacenamiento = context.getExternalFilesDir(CARPETA_LOG).getPath();
+
+            String carpetaAlmacenamiento = context.getFilesDir().getPath();
 
             //comprobamos si existe el directorio donde se almacenara el log, si no es asi lo creamos.
             File f = new File(carpetaAlmacenamiento);
@@ -33,16 +36,17 @@ public class FileLog {
                 f.mkdirs();
             }
 
-            long yourmilliseconds = System.currentTimeMillis();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            String tiempo = sdf.format(new Date(yourmilliseconds));
+          //String tiempo = Helper.dameMarcaTiempo("yyyyMMdd");
 
 
-            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + "/log_"+tiempo+".txt", true);
+
+            //FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + File.separator + "log_"+tiempo+".txt", true);
+            FileOutputStream fos = new FileOutputStream(carpetaAlmacenamiento + File.separator + nombreFichero, true);
             //FileOutputStream fos = context.openFileOutput(carpetaAlmacenamiento +"/log.txt", Context.MODE_APPEND);
             OutputStreamWriter fout = new OutputStreamWriter(fos);
             fout.write(info.toLog() + "\n");
             fout.close();
+            //Log.d("AA" ,carpetaAlmacenamiento + "/log_"+tiempo+".txt");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

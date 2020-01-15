@@ -6,6 +6,9 @@ import android.telephony.TelephonyManager;
 
 import com.jaredrummler.android.device.DeviceName;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Helper {
 
     @SuppressLint ("MissingPermission")
@@ -23,6 +26,13 @@ public class Helper {
             return "Desconocido";
         }
 
+    }
+
+    public static String dameMarcaTiempo(String formato){
+        long yourmilliseconds = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String tiempo = sdf.format(new Date(yourmilliseconds));
+        return tiempo;
     }
 
 }

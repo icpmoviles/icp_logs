@@ -52,13 +52,17 @@ public class LogTouch {
                             public void afterTextChanged(Editable s) {
                                 //MyLog.i(" => " + nombre + ", Valor:" + s.toString());
                                 //MyLog.i(nombreActivity + ", TOUCH:" + nombre + ", Clase:" + superClase+ " Texto: " + s.toString());
-
+/*
                                 long yourmilliseconds = System.currentTimeMillis();
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mmss");
-                                String tiempo = sdf.format(new Date(yourmilliseconds));
+                                String tiempo = sdf.format(new Date(yourmilliseconds));*/
 
 
-                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()));
+                                String tiempo = Helper.dameMarcaTiempo("yyyy-MM-dd hh:mmss");
+
+
+
+                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()), MyLog.nombreFicheroLog);
 
                             }
                         });
@@ -76,7 +80,7 @@ public class LogTouch {
 
                                 SimpleDateFormat mls = new SimpleDateFormat("ss.SSS");
                                 String tiempoTranscurrido = mls.format(new Date(event.getEventTime() - event.getDownTime()));
-                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""));
+                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""), MyLog.nombreFicheroLog);
                                 //MyLog.d("Tocado " + nombre);
                             }
                             return false;

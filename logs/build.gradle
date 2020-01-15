@@ -34,5 +34,14 @@ dependencies {
 
     implementation 'com.jaredrummler:android-device-names:1.1.8'
 
+    //implementation 'com.github.icpmoviles:icp_logs:1.0.0.1'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+
+    //Storage de los ficheros.. en Firebase Storage
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+
+    //Firebase Message
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 
 }

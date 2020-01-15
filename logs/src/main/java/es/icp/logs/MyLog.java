@@ -4,6 +4,8 @@ package es.icp.logs;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,7 +20,15 @@ public class MyLog {
 
     enum TIPO {DEBUG, ERROR, WARNING, INFORMATION, VERBOSE, INFO}
 
-   private static Boolean DEBUG = BuildConfig.DEBUG;
+    //0: Nada
+    //1: ERROR + WS (Enviar y Recibir)
+    //2: + WARNING
+    //3: + INFORMATION + DEBUG
+    //4: + VERBOSE
+    public static int nivelDetalleFichero = Constantes.FICHERO_DETALLE_ERROR_WS;
+    public  static String nombreFicheroLog = "log_"+ Helper.dameMarcaTiempo("YYYYmmdd")+".log";
+
+    private static Boolean DEBUG = BuildConfig.DEBUG;
     private static Boolean SAVE_FILE = true;
     /**
      * Etiqueta a mostrar en el log
@@ -93,9 +103,19 @@ public class MyLog {
         MyLog.mostrarLineas = mostrarLineas;
     }
 
-    public static void init(Context ctx) {
+    public static void init(Context ctx, Integer nivelDetalle) {
         context = ctx;
+        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : Constantes.FICHERO_DETALLE_ERROR_WS;
     }
+
+    public static void init(Context ctx, Integer nivelDetalle, String nombreFichero) {
+        context = ctx;
+
+        nivelDetalleFichero = nivelDetalle != null ? nivelDetalle : Constantes.FICHERO_DETALLE_ERROR_WS;
+        nombreFicheroLog = nombreFichero;
+    }
+
+
 
     /**
      * Mensaje de DEBUG
@@ -105,7 +125,8 @@ public class MyLog {
     public static void d(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.d(TAG, cadena);
-        if (SAVE_FILE) saveFichero(TIPO.DEBUG, cadena);
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG)
+            saveFichero(TIPO.DEBUG, cadena);
     }
 
     /**
@@ -116,7 +137,8 @@ public class MyLog {
     public static void e(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.e(TAG, cadena);
-        if (SAVE_FILE) saveFichero(TIPO.ERROR, cadena);
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_ERROR_WS)
+            saveFichero(TIPO.ERROR, cadena);
     }
 
     /**
@@ -127,7 +149,8 @@ public class MyLog {
     public static void w(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.w(TAG, cadena);
-        if (SAVE_FILE) saveFichero(TIPO.WARNING, cadena);
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_WARNING)
+            saveFichero(TIPO.WARNING, cadena);
     }
 
     /**
@@ -138,7 +161,8 @@ public class MyLog {
     public static void i(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.i(TAG, cadena);
-        if (SAVE_FILE) saveFichero(TIPO.INFORMATION, cadena);
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG)
+            saveFichero(TIPO.INFORMATION, cadena);
     }
 
     /**
@@ -149,7 +173,8 @@ public class MyLog {
     public static void v(Object texto) {
         String cadena = construirTexto(texto.toString(), 5);
         if (DEBUG) Log.v(TAG, cadena);
-        if (SAVE_FILE) saveFichero(TIPO.VERBOSE, cadena);
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_VERBOSE)
+            saveFichero(TIPO.VERBOSE, cadena);
     }
 
     /**
@@ -162,9 +187,9 @@ public class MyLog {
         try {
             l();
             String cadena = dameInfoTrace(4) + jsonObject.toString(TABULACION_JSON);
-            FileLog.fw(context, new InfoLog(cadena));
-            Log.d(TAG, cadena);
-
+            //  FileLog.fw(context, new InfoLog(cadena));
+//            Log.d(TAG, cadena);
+            MyLog.d(cadena);
             l();
         } catch (Exception ex) {
             e(ex.getMessage());
@@ -180,7 +205,9 @@ public class MyLog {
         if (!DEBUG) return;
         try {
             l();
-            Log.d(TAG, dameInfoTrace(4) + jsonArray.toString(TABULACION_JSON));
+            String cadena = dameInfoTrace(4) + jsonArray.toString(TABULACION_JSON);
+            //Log.d(TAG, dameInfoTrace(4) + jsonArray.toString(TABULACION_JSON));
+            MyLog.d(cadena);
             l();
         } catch (Exception ex) {
             e(ex.getMessage());
@@ -196,12 +223,9 @@ public class MyLog {
 
     private static void saveFichero(TIPO tipo, String texto) {
         if (context != null) {
-            long yourmilliseconds = System.currentTimeMillis();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String tiempo = sdf.format(new Date(yourmilliseconds));
-
-            texto = tipo.toString().substring(0,3) + "/ " + texto;
-            FileLog.fw(context, new InfoLog(texto));
+            String tiempo = Helper.dameMarcaTiempo("yyyy-MM-dd HH:mm:ss");
+            texto = tipo.toString().substring(0, 3) + "/ " + texto;
+            FileLog.fw(context, new InfoLog(texto), nombreFicheroLog);
         }
     }
 
@@ -291,16 +315,16 @@ public class MyLog {
         int trace = 6;
 
         String linea1 = construirTexto("┌" + repeat("-", texto.length() + (longitud * 2)) + "┐", trace);
-        String linea2 =construirTexto("|" + repeat("*", 3) + "  " + texto + "  " + repeat("*", 3) + "|", trace);
+        String linea2 = construirTexto("|" + repeat("*", 3) + "  " + texto + "  " + repeat("*", 3) + "|", trace);
         String linea3 = construirTexto("└" + repeat("-", texto.length() + (longitud * 2)) + "┘", trace);
 
         if (DEBUG) {
             Log.d(TAG, linea1);
-            Log.v(TAG, linea2 );
+            Log.v(TAG, linea2);
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE) {
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
             saveFichero(TIPO.VERBOSE, linea1);
             saveFichero(TIPO.VERBOSE, linea2);
             saveFichero(TIPO.VERBOSE, linea3);
@@ -327,11 +351,11 @@ public class MyLog {
 
         if (DEBUG) {
             Log.d(TAG, linea1);
-            Log.v(TAG, linea2 );
+            Log.v(TAG, linea2);
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE) {
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
             saveFichero(TIPO.VERBOSE, linea1);
             saveFichero(TIPO.VERBOSE, linea2);
             saveFichero(TIPO.VERBOSE, linea3);
@@ -354,19 +378,17 @@ public class MyLog {
         int trace = 6;
 
 
-
-
         String linea1 = construirTexto("╔" + repeat("═", texto.length() + (longitud * 2)) + "╗", trace);
         String linea2 = construirTexto("║" + repeat(" ", 5) + texto + repeat(" ", 5) + "║", trace);
         String linea3 = construirTexto("╚" + repeat("═", texto.length() + (longitud * 2)) + "╝", trace);
 
         if (DEBUG) {
             Log.d(TAG, linea1);
-            Log.v(TAG, linea2 );
+            Log.v(TAG, linea2);
             Log.d(TAG, linea3);
         }
 
-        if (SAVE_FILE) {
+        if (SAVE_FILE && nivelDetalleFichero >= Constantes.FICHERO_DETALLE_INFORMACION_DEBUG) {
             saveFichero(TIPO.ERROR, linea1);
             saveFichero(TIPO.ERROR, linea2);
             saveFichero(TIPO.ERROR, linea3);
