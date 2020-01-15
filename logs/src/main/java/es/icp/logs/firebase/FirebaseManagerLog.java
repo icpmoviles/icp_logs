@@ -9,10 +9,10 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import es.icp.logs.core.MyLog;
 
-public class FirebaseManager {
+public class FirebaseManagerLog {
 
 
-    public static  void createToken(final ListenerFirebase listenerFirebase){
+    public static  void createToken(final ListenerFirebaseLog listenerFirebaseLog){
 
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -21,14 +21,14 @@ public class FirebaseManager {
                         if (!task.isSuccessful()) {
                             //             Log.w(TAG, "getInstanceId failed", task.getException());
                             MyLog.c("Error a la generacion del token");
-                            listenerFirebase.error(0, task);
+                            listenerFirebaseLog.error(0, task);
                             return;
                         }
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
                         MyLog.c("Token generado: "+ token);
-                        listenerFirebase.ok(0, token);
+                        listenerFirebaseLog.ok(0, token);
 
                     }
                 });

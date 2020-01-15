@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import es.icp.logs.core.MyLog;
 
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingServiceMyLog extends FirebaseMessagingService {
 
 
     static FirebaseStorage storage = FirebaseStorage.getInstance();
