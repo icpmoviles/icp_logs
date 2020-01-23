@@ -46,7 +46,9 @@ public class MyTouch {
 
                                 SimpleDateFormat mls = new SimpleDateFormat("ss.SSS");
                                 String tiempoTranscurrido = mls.format(new Date(event.getEventTime() - event.getDownTime()));
-                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION,tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""), MyLog.nombreFicheroLog);
+                                if (MyLog.getSaveFile()) {
+                                    FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, tiempoTranscurrido, ""), MyLog.nombreFicheroLog);
+                                }
                             }
                             return false;
                         }
@@ -65,8 +67,11 @@ public class MyTouch {
                             @Override
                             public void afterTextChanged(Editable s) {
                                 String tiempo = Helper.dameMarcaTiempo("yyyy-MM-dd hh:mmss");
-                                FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()), MyLog.nombreFicheroLog);
+                                if (MyLog.getSaveFile()) {
+                                    FileLog.fw(context, new InfoLog(InfoLog.TIPO.PULSACION, tiempo, nombreActivity, nombre, tipo, "", s.toString()), MyLog.nombreFicheroLog);
+                                }
                             }
+
                         });
                     }
 
