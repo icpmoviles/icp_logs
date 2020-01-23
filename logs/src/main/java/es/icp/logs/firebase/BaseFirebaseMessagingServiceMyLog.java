@@ -42,19 +42,17 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
         MyLog.d("Mensaje recibido:" + mensajeRecibido);
         MyLog.d("Fichero:" + MyLog.nombreFicheroLog);
 
-        switch (remoteMessage.getNotification().getTitle().toString().trim()) {
+        if (remoteMessage.getData().containsKey("type") && remoteMessage.getData().get("type").equals("GET_LOG")) {
 
-            case "GET_LOG":
-                String carpetaAlmacenamiento = getApplicationContext().getFilesDir().getPath();
-                //String f = carpetaAlmacenamiento + File.separator + "log_20200114.txt";
-                String f = carpetaAlmacenamiento + File.separator + MyLog.nombreFicheroLog;
-                uploadFile(getApplicationContext(), f);
-                break;
+            switch (remoteMessage.getData().get("type").toString().toUpperCase().trim()) {
 
-            default:
-                MyLog.c("Titulo:" + titulo);
-                MyLog.c("Mensaje recibido:" + mensajeRecibido);
-                break;
+                case "GET_LOG":
+                    String carpetaAlmacenamiento = getApplicationContext().getFilesDir().getPath();
+                    //String f = carpetaAlmacenamiento + File.separator + "log_20200114.txt";
+                    String f = carpetaAlmacenamiento + File.separator + MyLog.nombreFicheroLog;
+                    uploadFile(getApplicationContext(), f);
+                    break;
+            }
         }
 
     }
@@ -86,7 +84,6 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
         });
 
     }
-
 
 
     private static byte[] GetDataFile(Context context, String f) {

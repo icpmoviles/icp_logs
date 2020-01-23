@@ -22,7 +22,9 @@ public class MyLog {
     //3: + INFORMATION + DEBUG
     //4: + VERBOSE
     public static int nivelDetalleFichero = LogDetalle.ERROR_WS;
-    public  static String nombreFicheroLog = "log_"+ Helper.dameMarcaTiempo("YYYYmmdd")+".log";
+
+    public static String prefijo = "";
+    public static String nombreFicheroLog = prefijo + Helper.dameMarcaTiempo("YYYYmmdd")+".log";
 
     private static Boolean DEBUG = BuildConfig.DEBUG;
     private static Boolean SAVE_FILE = true;
