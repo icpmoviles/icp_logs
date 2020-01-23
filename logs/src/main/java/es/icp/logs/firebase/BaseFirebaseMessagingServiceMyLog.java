@@ -48,8 +48,10 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
 
                 case "GET_LOG":
                     String carpetaAlmacenamiento = getApplicationContext().getFilesDir().getPath();
-                    //String f = carpetaAlmacenamiento + File.separator + "log_20200114.txt";
-                    String f = carpetaAlmacenamiento + File.separator + MyLog.nombreFicheroLog;
+
+
+                    String ficheroLog = MyLog.prefijo+ remoteMessage.getData().get("ID_USUARIO").toString()+ remoteMessage.getData().get("FECHA").toString() + MyLog.ext;
+                    String f = carpetaAlmacenamiento + File.separator +ficheroLog;
                     uploadFile(getApplicationContext(), f);
                     break;
             }
