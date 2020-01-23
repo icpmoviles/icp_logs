@@ -42,14 +42,17 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
         MyLog.d("Mensaje recibido:" + mensajeRecibido);
         MyLog.d("Fichero:" + MyLog.nombreFicheroLog);*/
 
-        if (remoteMessage.getData().containsKey("type") && remoteMessage.getData().get("type").equals("GET_LOG")) {
+        if (remoteMessage.getData().containsKey("type") && remoteMessage.getData().get("type").toString().equals("GET_LOG")) {
+
+
+            MyLog.v( remoteMessage.getData().get("type").toString());
 
             switch (remoteMessage.getData().get("type").toString().toUpperCase().trim()) {
 
                 case "GET_LOG":
                     String carpetaAlmacenamiento = getApplicationContext().getFilesDir().getPath();
 
-                    String ficheroLog = MyLog.prefijo+ remoteMessage.getData().get("ID_USUARIO").toString()+ remoteMessage.getData().get("FECHA").toString() + MyLog.ext;
+                    String ficheroLog = MyLog.prefijo+ remoteMessage.getData().get("id_usuario").toString()+ remoteMessage.getData().get("fecha").toString() + MyLog.ext;
                     String f = carpetaAlmacenamiento + File.separator +ficheroLog;
                     uploadFile(getApplicationContext(), f);
                     break;
