@@ -35,12 +35,12 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
 
-        String titulo = remoteMessage.getNotification().getTitle();
+        /*String titulo = remoteMessage.getNotification().getTitle();
         String mensajeRecibido = remoteMessage.getNotification().getBody();
 
         MyLog.d("Titulo:" + titulo);
         MyLog.d("Mensaje recibido:" + mensajeRecibido);
-        MyLog.d("Fichero:" + MyLog.nombreFicheroLog);
+        MyLog.d("Fichero:" + MyLog.nombreFicheroLog);*/
 
         if (remoteMessage.getData().containsKey("type") && remoteMessage.getData().get("type").equals("GET_LOG")) {
 
@@ -48,7 +48,6 @@ public class BaseFirebaseMessagingServiceMyLog extends FirebaseMessagingService 
 
                 case "GET_LOG":
                     String carpetaAlmacenamiento = getApplicationContext().getFilesDir().getPath();
-
 
                     String ficheroLog = MyLog.prefijo+ remoteMessage.getData().get("ID_USUARIO").toString()+ remoteMessage.getData().get("FECHA").toString() + MyLog.ext;
                     String f = carpetaAlmacenamiento + File.separator +ficheroLog;
