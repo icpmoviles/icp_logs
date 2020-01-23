@@ -7,7 +7,7 @@
 
     <application>
         <service
-            android:name=".firebase.MyFirebaseMessagingServiceMyLog"
+            android:name=".firebase.BaseFirebaseMessagingServiceMyLog"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

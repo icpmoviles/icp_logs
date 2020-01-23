@@ -51,6 +51,15 @@ public class MyLog {
         MyLog.DEBUG = DEBUG;
     }
 
+
+    public static Boolean getSaveFile() {
+        return SAVE_FILE;
+    }
+
+    public static void setSaveFile(Boolean saveFile) {
+        SAVE_FILE = saveFile;
+    }
+
     public static String getTAG() {
         return TAG;
     }
